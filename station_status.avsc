@@ -1,0 +1,29 @@
+{
+  "namespace": "bikeshare_app",
+  "type": "record",
+  "name": "stationStatus",
+  "doc": "lists station status",
+  "fields": [
+    {
+      "name": "station_id", "type": "int"
+    },
+    {
+      "name": "num_bikes_available", "type": "int"
+    },
+    {
+      "name": "num_bikes_disabled", "type": ["int", "null"]
+    },
+    {
+      "name": "is_installed", "type": "int"
+    },
+    {
+      "name": "is_renting", "type": "int"
+    },
+    {
+      "name": "is_returning", "type": "int"
+    },
+    {
+      "name": "last_reported", "type": "int"
+    },
+  ]
+}
