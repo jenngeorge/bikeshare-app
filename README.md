@@ -17,3 +17,6 @@ Citibike "General Bikeshare Feed Specification" (GBFS) for avro schema
 
 defining an avro schema:
 https://avro.apache.org/docs/1.8.2/gettingstartedpython.html
+
+Processing streamining.io data 
+- https://github.com/streamdataio/streamdataio-python/blob/master/client.py

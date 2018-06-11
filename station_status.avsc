@@ -2,7 +2,7 @@
   "namespace": "bikeshare_app",
   "type": "record",
   "name": "stationStatus",
-  "doc": "lists station status",
+  "doc": "a station status",
   "fields": [
     {
       "name": "station_id", "type": "int"
