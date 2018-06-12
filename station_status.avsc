@@ -5,25 +5,66 @@
   "doc": "a station status",
   "fields": [
     {
-      "name": "station_id", "type": "int"
+      "name": "id", "type": "int"
     },
     {
-      "name": "num_bikes_available", "type": "int"
+      "name": "station_name", "type": "string"
+    },
+    {
+      "name": "available_docks", "type": "int"
+    },
+    {
+      "name": "total_docks", "type": "int"
+    },
+    {
+      "name": "status_value", "type": "string"
+    },
+    {
+      "name": "status_key", "type": "int"
+    },
+    {
+      "name": "city", "type": "string"
+    },
+    {
+      "name": "postal_code", "type": "string"
     },
     {
       "name": "num_bikes_disabled", "type": ["int", "null"]
     },
     {
-      "name": "is_installed", "type": "int"
+      "name": "available_bikes", "type": "int"
     },
     {
-      "name": "is_renting", "type": "int"
+      "name": "st_address_1", "type": "string"
     },
     {
-      "name": "is_returning", "type": "int"
+      "name": "st_address_2", "type": "string"
     },
     {
-      "name": "last_reported", "type": "int"
+      "name": "location", "type": "string"
+    },
+    {
+      "name": "altitude", "type": "string"
+    },
+    {
+      "name": "test_station", "type": "bool"
+    },
+    {
+      "name": "landmark", "type": "string"
+    },
+    {
+      "name": "last_communication_time", "type": "int"
+    },
+    {
+      "name": "available_docks", "type": "int"
+    },
+    {
+      "name": "latitude", "type": "double"
+    },
+    {
+      "name": "longitude", "type": "double"
     },
   ]
 }
+
+

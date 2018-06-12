@@ -20,3 +20,5 @@ https://avro.apache.org/docs/1.8.2/gettingstartedpython.html
 
 Processing streamining.io data 
 - https://github.com/streamdataio/streamdataio-python/blob/master/client.py
+
+- for events, we're going to have to store a mapping of stationBeanList index to station ids. 

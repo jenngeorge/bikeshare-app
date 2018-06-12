@@ -12,19 +12,17 @@ key_schema_str = """
    "name": "key",
    "type": "record",
    "fields" : [
-     {"name" : "station_id", "type" : "int"}
+     {"name" : "station_bean_list_id", "type" : "int"}
    ]
 }
 """
 
 value_schema = avro.loads(value_schema_str)
 key_schema = avro.loads(key_schema_str)
-# value = {"name": "Value"}
-# key = {"name": "Key"}
 
 avroProducer = AvroProducer({
     'bootstrap.servers': 'localhost:9092',
-    'schema.registry.url': 'http://localhost:8081'
+    'schema.registry.url': 'http://localhost:8081',
     }, default_key_schema=key_schema, default_value_schema=value_schema)
 
     
