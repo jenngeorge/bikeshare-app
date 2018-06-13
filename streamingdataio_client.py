@@ -1,4 +1,4 @@
-https://github.com/streamdataio/streamdataio-python/blob/master/client.py
+# https://github.com/streamdataio/streamdataio-python/blob/master/client.py
 
 """Streamdata.io demo."""
 
@@ -13,16 +13,15 @@ import requests
 import sseclient
 from terminaltables import AsciiTable
 
-SD_TOKEN = "[YOUR_STREAMDATAIO_APP_TOKEN]"
-DEMO_API = "http://stockmarket.streamdata.io/v2/prices"
 URL = (
-    "https://streamdata.motwin.net/{}?X-Sd-Token={}".format(DEMO_API, SD_TOKEN)
-)
+    "https://proxy.streamdata.io/https://feeds.citibikenyc.com/stations/stations.json"
+    )
 
 def print_table(data):
     """Print data as a table."""
     table_data = []
     for item in data:
+        print(item)
         item = collections.OrderedDict(
             sorted(item.items(), key=lambda t: t[0]))
         if len(table_data) == 0:
@@ -36,21 +35,27 @@ def run(data, headers, retryCount):
     """Launch client."""
     """with requests.get(URL, stream=True) as response:"""
 
-    print(headers)
     try:
             with requests.get(URL, stream=True, headers=headers) as response:
+                # for chunk in response.iter_content(chunk_size=128):
+                # print(response.content())
+
                 client = sseclient.SSEClient(response)
+
                 for event in client.events():
                     if event.event == "data":
                         print("Data event received")
                         last_event_id = event.id
                         data = json.loads(event.data)
+                        data = data["stationBeanList"]
                         print_table(data)
 
                     elif event.event == "patch":
+                        print(event)
                         print("Patch event received")
                         last_event_id = event.id
                         patch = jsonpatch.JsonPatch.from_string(event.data)
+
                         patch.apply(data, in_place=True)
                         print_table(data)
 
@@ -101,7 +106,7 @@ def run(data, headers, retryCount):
                             time.sleep(retry + random.randint(0, 15))
 
                             """Re-initiate a new connection with the Last-Event-ID and
-                               the latest data received (to be able to apply the next
+                               the latest data received in the header (to be able to apply the next
                                patch)
                             """
                             run(data, { 'Last-Event-ID': last_event_id }, retryCount)
@@ -111,6 +116,7 @@ def run(data, headers, retryCount):
                         client.close()
     except:
         print("Unexpected error:",  sys.exc_info()[0])
+        print("Unexpected error:",  sys.exc_info())
 
 if __name__ == "__main__":
     run([], {}, 0)
