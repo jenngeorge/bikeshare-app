@@ -18,7 +18,7 @@ Citibike "General Bikeshare Feed Specification" (GBFS) for avro schema
 defining an avro schema:
 https://avro.apache.org/docs/1.8.2/gettingstartedpython.html
 
-Processing streamining.io data 
+Processing streamining.io data
 - https://github.com/streamdataio/streamdataio-python/blob/master/client.py
 
-- for events, we're going to have to store a mapping of stationBeanList index to station ids. 
+Docker image and guide for spark, dockerfile and scripts for spark application - https://github.com/mjhea0/flask-spark-docker
