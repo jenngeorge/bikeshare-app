@@ -9,6 +9,7 @@ Confluent + Docker tutorial: https://docs.confluent.io/current/installation/dock
   - `docker-compose up`, `docker-compose down`
   - `docker-compose ps`: prints status of services
   - `docker-compose logs`
+  - `docker system prune -a` use this or run out of storage
 
 
 Citibike "General Bikeshare Feed Specification" (GBFS) for avro schema
