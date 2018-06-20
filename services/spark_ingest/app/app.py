@@ -3,7 +3,7 @@ try:
     import requests
     import json
     import time
-    from pyspark import SparkContext
+    from pyspark import SparkContext, SparkConf
 except:
     print('error importing for spark_ingest/app')
 
@@ -11,7 +11,10 @@ except:
 def poll():
     url = "https://gbfs.citibikenyc.com/gbfs/en/station_status.json"
 
-    sc = SparkContext(appname="SparkIngestCitibike")
+
+    conf = SparkConf().setAppName('CitibikeDataIngestion')
+    sc = SparkContext(conf=conf)
+    print('DIDDDD SPARK')
 
     while True:
         response = requests.get(url)

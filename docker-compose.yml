@@ -17,7 +17,7 @@ services:
       - webnet
 
   spark-master:
-    # container_name: spark-master
+    container_name: spark-master
     image: jenngeorge/bikeshare_app:spark
     command: bin/spark-class org.apache.spark.deploy.master.Master -h spark-master
     hostname: spark-master
@@ -45,7 +45,7 @@ services:
 
   spark-worker:
     image: jenngeorge/bikeshare_app:spark
-    # container_name: spark-worker
+    container_name: spark-worker
     command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
     hostname: spark-worker
     environment:
@@ -71,23 +71,43 @@ services:
       - spark-master
     depends_on:
       - spark-master
-
+  
   spark-ingest:
-    # container_name: spark_ingest
-    image: jenngeorge/bikeshare_app:spark_ingest
+    container_name: spark-ingest
+    image: spark_ingest
+    build:
+      context: ./services/spark_ingest
+      dockerfile: Dockerfile
     volumes:
       - './services/spark_ingest/app:/usr/src/spark_ingest'
     ports:
       - 5009:5000
-    command: python app.py runserver -h 0.0.0.0
-    environment:
-      - APP_SETTINGS=server.config.DevelopmentConfig
+    # command: python manage.py runserver -h 0.0.0.0
+    command: spark-submit --master spark://spark-master:7077 --class endpoint app.py
+    # environment:
+    #   - APP_SETTINGS=server.config.DevelopmentConfig
     links:
       - spark-master
       - spark-worker
     depends_on:
+      # - redis
       - spark-master
       - spark-worker
+
+  # spark-ingest:
+  #   container_name: spark-ingest
+  #   image: jenngeorge/bikeshare_app:spark_ingest
+  #   volumes:
+  #     - './services/spark_ingest/app:/usr/src/spark_ingest'
+  #   command: spark-submit --master spark://spark-master:7077 --class endpoint app.py
+  #   # environment:
+  #   #   - APP_SETTINGS=server.config.DevelopmentConfig
+  #   links:
+  #     - spark-master
+  #     - spark-worker
+  #   depends_on:
+  #     - spark-master
+  #     - spark-worker
 
   zookeeper-1:
     image: confluentinc/cp-zookeeper:latest
