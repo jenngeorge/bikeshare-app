@@ -1,1 +1,2 @@
 requests
+confluent-kafka[avro]

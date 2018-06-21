@@ -5,7 +5,7 @@ import time
 from pyspark import SparkContext, SparkConf
 from confluent_kafka import avro
 from confluent_kafka.avro import AvroProducer
-import station_schema
+from avro_schema import station_schema
 #except:
 #    print('error importing for spark_ingest/app')
 
@@ -28,11 +28,12 @@ key_schema = avro.loads(key_schema_str)
 
 avroProducer = AvroProducer({
     'bootstrap.servers': 'localhost:19092',
-    'schema.registry.url': 'http://localhost:8081',
+    'schema.registry.url': 'http://localhost:8083',
     }, default_key_schema=key_schema, default_value_schema=value_schema)
 
 def poll():
-    url = "https://gbfs.citibikenyc.com/gbfs/en/station_status.json"
+    # url = "https://gbfs.citibikenyc.com/gbfs/en/station_status.json"
+    url = "https://feeds.citibikenyc.com/stations/stations.json"
 
     conf = SparkConf().setAppName('CitibikeDataIngestion')
     sc = SparkContext(conf=conf)
@@ -42,13 +43,13 @@ def poll():
     while True:
         response = requests.get(url)
         response = response.json()['stationBeanList']
-        #Create key, value pair rdd with station id as key and all other 
+        #Create key, value pair rdd with station id as key and all other
         #fields as a value list.
-        curr_rdd = sc.parallelize(response).map(lambda x: (list(x.items())[0], 
+        curr_rdd = sc.parallelize(response).map(lambda x: (list(x.items())[0],
                             list(x.items())[1:]))
         #First request, all stations need to be created
         if last_rdd == None:
-            #Create rdd to send to kafka. Append to values list a new field 
+            #Create rdd to send to kafka. Append to values list a new field
             #specifying the operation
             rdd_stream = curr_rdd.map(lambda x: (x[0],x[1] + [('op','create')]))
         #Second request forward, updates to existing stations
@@ -65,7 +66,7 @@ def poll():
                                 .subtract(last_rdd.flatMapValues(flat))\
                                     .groupByKey()\
                                         .mapValues(list)\
-                                            .map(lambda x: (x[0],x[1] 
+                                            .map(lambda x: (x[0],x[1]
                                                 + [('op','update')]))
             #Combine deletes, creates and updates into single stream for kafka
             rdd_stream = rdd_updates.union(rdd_creates)\
@@ -83,5 +84,3 @@ def poll():
 
 if __name__ == '__main__':
     poll()
-
-

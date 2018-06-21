@@ -71,7 +71,7 @@ services:
       - spark-master
     depends_on:
       - spark-master
-  
+
   spark-ingest:
     container_name: spark-ingest
     image: spark_ingest
@@ -82,32 +82,13 @@ services:
       - './services/spark_ingest/app:/usr/src/spark_ingest'
     ports:
       - 5009:5000
-    # command: python manage.py runserver -h 0.0.0.0
     command: spark-submit --master spark://spark-master:7077 --class endpoint app.py
-    # environment:
-    #   - APP_SETTINGS=server.config.DevelopmentConfig
     links:
       - spark-master
       - spark-worker
     depends_on:
-      # - redis
       - spark-master
       - spark-worker
-
-  # spark-ingest:
-  #   container_name: spark-ingest
-  #   image: jenngeorge/bikeshare_app:spark_ingest
-  #   volumes:
-  #     - './services/spark_ingest/app:/usr/src/spark_ingest'
-  #   command: spark-submit --master spark://spark-master:7077 --class endpoint app.py
-  #   # environment:
-  #   #   - APP_SETTINGS=server.config.DevelopmentConfig
-  #   links:
-  #     - spark-master
-  #     - spark-worker
-  #   depends_on:
-  #     - spark-master
-  #     - spark-worker
 
   zookeeper-1:
     image: confluentinc/cp-zookeeper:latest
@@ -207,6 +188,23 @@ services:
     volumes:
       - kafka-2-data:/data
       - kafka-2-logs:/logs
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:latest
+    hostname: schema-registry
+    container_name: schema-registry
+    depends_on:
+      - zookeeper-1
+      - zookeeper-2
+      - zookeeper-3
+      - kafka-1
+      - kafka-2
+      - kafka-3
+    ports:
+      - "8082:8082"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: localhost:22181,localhost:32181,localhost:42181
 
 volumes:
   zookeeper-1-data:

@@ -1,3 +1,4 @@
+station_schema = """
 {
   "namespace": "bikeshare_app",
   "type": "record",
@@ -50,7 +51,7 @@
       "name": "altitude", "type": "string"
     },
     {
-      "name": "test_station", "type": "bool"
+      "name": "test_station", "type": "boolean"
     },
     {
       "name": "last_communication_time", "type": "int"
@@ -63,3 +64,4 @@
     }
   ]
 }
+"""
