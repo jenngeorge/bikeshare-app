@@ -28,7 +28,7 @@ key_schema = avro.loads(key_schema_str)
 
 avroProducer = AvroProducer({
     'bootstrap.servers': 'localhost:19092',
-    'schema.registry.url': 'http://localhost:8083',
+    'schema.registry.url': 'http://schema-registry:8082',
     }, default_key_schema=key_schema, default_value_schema=value_schema)
 
 def poll():
@@ -74,7 +74,7 @@ def poll():
 
         for update in rdd_stream.collect():
             print(update)
-            key_dict = dict(update[0])
+            key_dict = dict([update[0]])
             value_dict = dict(update[1])
             avroProducer.produce(topic='station_status', value=value_dict, key=key_dict)
         last_rdd = curr_rdd
