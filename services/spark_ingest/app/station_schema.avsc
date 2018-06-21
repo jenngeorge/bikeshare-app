@@ -1,7 +1,7 @@
 {
   "namespace": "bikeshare_app",
   "type": "record",
-  "name": "stationStatus",
+  "name": "station_status",
   "doc": "a station status",
   "fields": [
     {
@@ -17,19 +17,16 @@
       "name": "total_docks", "type": "int"
     },
     {
+      "name": "latitude", "type": "double"
+    },
+    {
+      "name": "longitude", "type": "double"
+    },
+    {
       "name": "status_value", "type": "string"
     },
     {
       "name": "status_key", "type": "int"
-    },
-    {
-      "name": "city", "type": "string"
-    },
-    {
-      "name": "postal_code", "type": "string"
-    },
-    {
-      "name": "num_bikes_disabled", "type": ["int", "null"]
     },
     {
       "name": "available_bikes", "type": "int"
@@ -41,6 +38,12 @@
       "name": "st_address_2", "type": "string"
     },
     {
+      "name": "city", "type": "string"
+    },
+    {
+      "name": "postal_code", "type": "string"
+    },
+    {
       "name": "location", "type": "string"
     },
     {
@@ -50,21 +53,13 @@
       "name": "test_station", "type": "bool"
     },
     {
-      "name": "landmark", "type": "string"
-    },
-    {
       "name": "last_communication_time", "type": "int"
     },
     {
-      "name": "available_docks", "type": "int"
+      "name": "landmark", "type": "string"
     },
     {
-      "name": "latitude", "type": "double"
-    },
-    {
-      "name": "longitude", "type": "double"
-    },
+      "name": "op", "type": "string"
+    }
   ]
 }
-
-
