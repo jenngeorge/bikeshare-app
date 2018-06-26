@@ -27,8 +27,8 @@ value_schema = avro.loads(value_schema_str)
 key_schema = avro.loads(key_schema_str)
 
 avroProducer = AvroProducer({
-    'bootstrap.servers': 'localhost:19092',
-    'schema.registry.url': 'http://schema-registry:8082',
+    'bootstrap.servers': 'kafka-1:19092, kafka-2:29092',
+    'schema.registry.url': 'http://schema-registry:8081',
     }, default_key_schema=key_schema, default_value_schema=value_schema)
 
 def poll():
@@ -80,7 +80,7 @@ def poll():
         last_rdd = curr_rdd
         time.sleep(5)
 
-    avroProducer.flush()
+        avroProducer.flush()
 
 if __name__ == '__main__':
     poll()
