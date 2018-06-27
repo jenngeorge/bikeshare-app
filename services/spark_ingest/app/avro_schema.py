@@ -3,19 +3,15 @@ station_schema = """
   "namespace": "bikeshare_app",
   "type": "record",
   "name": "station_status",
-  "doc": "a station status",
   "fields": [
     {
-      "name": "id", "type": "int"
+      "name": "stationName", "type": "string"
     },
     {
-      "name": "station_name", "type": "string"
+      "name": "availableDocks", "type": "int"
     },
     {
-      "name": "available_docks", "type": "int"
-    },
-    {
-      "name": "total_docks", "type": "int"
+      "name": "totalDocks", "type": "int"
     },
     {
       "name": "latitude", "type": "double"
@@ -24,25 +20,25 @@ station_schema = """
       "name": "longitude", "type": "double"
     },
     {
-      "name": "status_value", "type": "string"
+      "name": "statusValue", "type": "string"
     },
     {
-      "name": "status_key", "type": "int"
+      "name": "statusKey", "type": "int"
     },
     {
-      "name": "available_bikes", "type": "int"
+      "name": "availableBikes", "type": "int"
     },
     {
-      "name": "st_address_1", "type": "string"
+      "name": "stAddress1", "type": "string"
     },
     {
-      "name": "st_address_2", "type": "string"
+      "name": "stAddress2", "type": "string"
     },
     {
       "name": "city", "type": "string"
     },
     {
-      "name": "postal_code", "type": "string"
+      "name": "postalCode", "type": "string"
     },
     {
       "name": "location", "type": "string"
@@ -51,13 +47,13 @@ station_schema = """
       "name": "altitude", "type": "string"
     },
     {
-      "name": "test_station", "type": "boolean"
+      "name": "testStation", "type": "boolean"
     },
     {
-      "name": "last_communication_time", "type": "int"
+      "name": "lastCommunicationTime", "type": "string"
     },
     {
-      "name": "landmark", "type": "string"
+      "name": "landMark", "type": "string"
     },
     {
       "name": "op", "type": "string"
