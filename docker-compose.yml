@@ -3,7 +3,6 @@ version: "3"
 services:
   web:
     image: jenngeorge/bikeshare_app:flask_app
-    #network_mode: host
     # deploy:
     #   replicas: 3
     #   resources:
@@ -20,7 +19,6 @@ services:
     image: jenngeorge/bikeshare_app:spark
     command: bin/spark-class org.apache.spark.deploy.master.Master -h spark-master
     hostname: spark-master
-    #network_mode: host
     environment:
       MASTER: spark://spark-master:7077
       SPARK_CONF_DIR: /conf
@@ -48,7 +46,6 @@ services:
     container_name: spark-worker
     command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
     hostname: spark-worker
-    #network_mode: host
     environment:
       SPARK_CONF_DIR: /conf
       SPARK_WORKER_CORES: 2
@@ -71,17 +68,16 @@ services:
     depends_on:
       - spark-master
 
-  spark-ingest:
-    container_name: spark-ingest
-    image: spark_ingest
-    hostname: spark-ingest
-    #network_mode: host
+  citibike-producer:
+    container_name: citibike-producer
+    image: citibike_producer
+    hostname: citibike-producer
     restart: always
     build:
-      context: ./services/spark_ingest
+      context: ./services/citibike_producer
       dockerfile: Dockerfile
     volumes:
-      - './services/spark_ingest/app:/usr/src/spark_ingest'
+      - './services/citibike_producer/app:/usr/src/citibike_producer'
     ports:
       - 5009:5000
     command: dockerize -wait tcp://schema-registry:8081 -wait tcp://kafka-1:19092 -wait tcp://kafka-2:29092 spark-submit --master spark://spark-master:7077 --class endpoint app.py
@@ -96,7 +92,6 @@ services:
   zookeeper-1:
     image: confluentinc/cp-zookeeper:latest
     hostname: zookeeper-1
-    #network_mode: host
     environment:
       ZOOKEEPER_SERVER_ID: 1
       ZOOKEEPER_CLIENT_PORT: 22181
@@ -113,7 +108,6 @@ services:
   zookeeper-2:
     image: confluentinc/cp-zookeeper:latest
     hostname: zookeeper-2
-    #network_mode: host
     environment:
       ZOOKEEPER_SERVER_ID: 2
       ZOOKEEPER_CLIENT_PORT: 32181
@@ -130,7 +124,6 @@ services:
   zookeeper-3:
     image: confluentinc/cp-zookeeper:latest
     hostname: zookeeper-3
-    #network_mode: host
     environment:
       ZOOKEEPER_SERVER_ID: 3
       ZOOKEEPER_CLIENT_PORT: 42181
@@ -147,7 +140,6 @@ services:
   kafka-1:
     image: confluentinc/cp-kafka:latest
     hostname: kafka-1
-    #network_mode: host
     depends_on:
       - zookeeper-1
       - zookeeper-2
@@ -165,7 +157,6 @@ services:
   kafka-2:
     image: confluentinc/cp-kafka:latest
     hostname: kafka-2
-    #network_mode: host
     depends_on:
       - zookeeper-1
       - zookeeper-2
@@ -183,7 +174,6 @@ services:
   kafka-3:
     image: confluentinc/cp-kafka:latest
     hostname: kafka-3
-    #network_mode: host
     depends_on:
       - zookeeper-1
       - zookeeper-2
@@ -202,7 +192,6 @@ services:
     image: confluentinc/cp-schema-registry:latest
     hostname: schema-registry
     restart: always
-    #network_mode: host
     container_name: schema-registry
     depends_on:
       - zookeeper-1
