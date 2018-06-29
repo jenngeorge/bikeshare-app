@@ -7,10 +7,6 @@ from confluent_kafka import avro
 from confluent_kafka.avro import AvroProducer
 from avro_schema import station_schema
 
-from confluent_kafka.avro import AvroConsumer
-from confluent_kafka.avro.serializer import SerializerError
-from confluent_kafka import KafkaError
-
 
 value_schema_str = station_schema
 
@@ -84,39 +80,5 @@ def poll():
 
         avroProducer.flush()
 
-
-def consume():
-    c = AvroConsumer({
-    'bootstrap.servers': 'kafka-1:19092, kafka-2:29092',
-    'schema.registry.url': 'http://schema-registry:8081',
-    'group.id': 'groupid',
-    })
-
-    c.subscribe(['station_status'])
-
-    while True:
-        try:
-            msg = c.poll(10)
-
-        except SerializerError as e:
-            print("Message deserialization failed for {}: {}".format(msg, e))
-            break
-
-        if msg is None:
-            print("~~~~MESSAGE IS NONE")
-            continue
-
-        if msg.error():
-            if msg.error().code() == KafkaError._PARTITION_EOF:
-                continue
-            else:
-                print("~~A MESSAGE ERROR", msg.error())
-                break
-
-        print('~~~~~DIDD ITTTT', msg.value())
-
-    c.close()
-
 if __name__ == '__main__':
-    consume()
     poll()
