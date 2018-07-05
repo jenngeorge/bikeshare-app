@@ -30,6 +30,9 @@ Processing streamining.io data
 Docker image and guide for spark, dockerfile and scripts for spark application - https://github.com/mjhea0/flask-spark-docker
 
 
+flask/ postgres docker tutorial:
+- https://testdriven.io/part-one-postgres-setup
+
 AWS
 - look at elastic beanstalk or elastic containers
 - it will take patience
@@ -41,4 +44,4 @@ might want a docker-compose.prod
   - because there could be a different dev database
   - use env variables in docker-compose
 
-initializing a database 
+initializing a database

@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:2.7-slim
+FROM python:3.6-slim-jessie
 
 # Set the working directory to /bikeshare_app
 WORKDIR /bikeshare_app
@@ -17,4 +17,4 @@ EXPOSE 80
 ENV NAME World
 
 # Run bikeshare_app.py when the container launches
-CMD ["python", "bikeshare_app.py"]
+CMD ["python", "manage.py"]
