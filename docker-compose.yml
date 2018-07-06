@@ -11,7 +11,7 @@ services:
       - ./services/web:/usr/src/bikeshare_app
     restart: always
     ports:
-      - "4000:80"
+      - 4000:4000
     environment:
       - FLASK_APP=api/__init__.py
       - FLASK_DEBUG=1

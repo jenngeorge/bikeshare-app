@@ -54,7 +54,7 @@ def consume():
                 print("~~A MESSAGE ERROR", msg.error())
                 break
 
-        print('~~~~~DIDD ITTTT', msg.value())
+        print('~~~~~DIDD ITTTT', "key:", msg.key(), "value:", msg.value())
 
     c.close()
 

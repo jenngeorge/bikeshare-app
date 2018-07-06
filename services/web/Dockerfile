@@ -2,19 +2,17 @@
 FROM python:3.6-slim-jessie
 
 # Set the working directory to /bikeshare_app
-WORKDIR /bikeshare_app
+RUN mkdir -p /usr/src/bikeshare_app
+WORKDIR usr/src/bikeshare_app
 
-# Copy the current directory contents into the container at /bikeshare_app
-ADD . /bikeshare_app
+# add requirements
+COPY ./requirements.txt /usr/src/bikeshare_app/requirements.txt
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --trusted-host pypi.python.org -r requirements.txt
+# install requirements
+RUN pip install -r requirements.txt
 
-# Make port 80 available to the world outside this container
-EXPOSE 80
-
-# Define environment variable
-ENV NAME World
+# add app
+COPY . /usr/src/bikeshare_app
 
 # Run bikeshare_app.py when the container launches
-CMD ["python", "manage.py"]
+CMD python manage.py run -h 0.0.0.0 -p 4000
