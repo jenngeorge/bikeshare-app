@@ -7,6 +7,7 @@ services:
       context: ./services/web
       dockerfile: Dockerfile
     image: jenngeorge/bikeshare_app:flask_app
+    command: dockerize -wait tcp://db:5432 python manage.py run -h 0.0.0.0 -p 4000
     volumes:
       - ./services/web:/usr/src/bikeshare_app
     restart: always
@@ -16,6 +17,21 @@ services:
       - FLASK_APP=api/__init__.py
       - FLASK_DEBUG=1
       - APP_SETTINGS=api.config.DevelopmentConfig
+    depends_on:
+      - db
+
+  db:
+    container_name: db
+    image: jenngeorge/bikeshare_app:db
+    hostname: db
+    build:
+      context: ./services/db
+      dockerfile: Dockerfile
+    ports:
+      - 5435:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
 
   spark-master:
     container_name: spark-master

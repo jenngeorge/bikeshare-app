@@ -1,10 +1,10 @@
 ## Current Status:
-- adding Flask & Postgres to Docker, set up database
+- goal: adding Flask & Postgres to Docker, set up database
   - flask is the api
   - postgres holds all the station data in 2 tables: stations and station_changes
 - currently in the code:
-  - working through tutorial. status = halfway down this page https://testdriven.io/part-one-postgres-setup
-  - immediate next step: figure out [SQLAlchemy model inheritance](http://docs.sqlalchemy.org/en/latest/orm/inheritance.html) because `services/web/__init__.py` model definitions are getting really repetitive
+  - working through tutorial. status = at 'Sanity check' part of this page https://testdriven.io/part-one-postgres-setup
+  - immediate next step: udpate manage.py
 
 
 ## Resources Used:
@@ -26,6 +26,8 @@ Helpful Docker commands:
     - from within the container, can run commands
   - `docker-compose exec <service-name> bash`
     - get into an already running service
+  - if there isn't permission to run something, add `chmod`
+    - `chmod +x services/users/entrypoint.sh`
 
 
 Tips from friends / the internet:
