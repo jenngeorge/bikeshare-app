@@ -29,6 +29,10 @@ Helpful Docker commands:
   - if there isn't permission to run something, add `chmod`
     - `chmod +x services/users/entrypoint.sh`
 
+Helpful database commands:
+- recreate the dev database: `docker-compose -f docker-compose.yml \
+  run web python manage.py recreate_db`
+- get into psql: `docker exec -ti $(docker ps -aqf "name=bikeshare-db") psql -U postgres`
 
 Tips from friends / the internet:
 - AWS

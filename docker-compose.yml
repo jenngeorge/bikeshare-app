@@ -7,7 +7,7 @@ services:
       context: ./services/web
       dockerfile: Dockerfile
     image: jenngeorge/bikeshare_app:flask_app
-    command: dockerize -wait tcp://db:5432 python manage.py run -h 0.0.0.0 -p 4000
+    command: dockerize -wait tcp://bikeshare-db:5432 python manage.py run -h 0.0.0.0 -p 4000
     volumes:
       - ./services/web:/usr/src/bikeshare_app
     restart: always
@@ -17,17 +17,17 @@ services:
       - FLASK_APP=api/__init__.py
       - FLASK_DEBUG=1
       - APP_SETTINGS=api.config.DevelopmentConfig
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/bikeshare_dev
-      - DATABASE_TEST_URL=postgres://postgres:postgres@db:5432/bikeshare_prod
+      - DATABASE_URL=postgres://postgres:postgres@bikeshare-db:5432/bikeshare_dev
+      - DATABASE_TEST_URL=postgres://postgres:postgres@bikeshare-db:5432/bikeshare_prod
     depends_on:
-      - db
+      - bikeshare-db
 
-  db:
-    container_name: db
-    image: jenngeorge/bikeshare_app:db
-    hostname: db
+  bikeshare-db:
+    container_name: bikeshare-db
+    image: jenngeorge/bikeshare_app:bikeshare-db
+    hostname: bikeshare-db
     build:
-      context: ./services/db
+      context: ./services/bikeshare-db
       dockerfile: Dockerfile
     ports:
       - 5435:5432

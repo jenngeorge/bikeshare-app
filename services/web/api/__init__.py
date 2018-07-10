@@ -111,8 +111,6 @@ def __init__(self, username, email):
     self.email = email
 
 
-
-
 @app.route('/')
 def index():
     return "hello!"
