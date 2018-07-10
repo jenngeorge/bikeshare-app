@@ -3,8 +3,8 @@
   - flask is the api
   - postgres holds all the station data in 2 tables: stations and station_changes
 - currently in the code:
-  - working through tutorial. status = at 'Sanity check' part of this page https://testdriven.io/part-one-postgres-setup
-  - immediate next step: udpate manage.py
+  - working through tutorial. status = completed https://testdriven.io/part-one-postgres-setup
+  - immediate next step: go to next section
 
 
 ## Resources Used:

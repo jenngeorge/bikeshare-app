@@ -17,6 +17,8 @@ services:
       - FLASK_APP=api/__init__.py
       - FLASK_DEBUG=1
       - APP_SETTINGS=api.config.DevelopmentConfig
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/bikeshare_dev
+      - DATABASE_TEST_URL=postgres://postgres:postgres@db:5432/bikeshare_prod
     depends_on:
       - db
 
