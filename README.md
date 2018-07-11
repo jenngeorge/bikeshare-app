@@ -3,8 +3,8 @@
   - flask is the api
   - postgres holds all the station data in 2 tables: stations and station_changes
 - currently in the code:
-  - working through tutorial. status = completed https://testdriven.io/part-one-postgres-setup
-  - immediate next step: go to next section
+  - working through tutorial. status = completed https://testdriven.io/part-one-test-setup
+  - immediate next step: go to next section (flask blueprints)
 
 
 ## Resources Used:
@@ -33,6 +33,7 @@ Helpful database commands:
 - recreate the dev database: `docker-compose -f docker-compose.yml \
   run web python manage.py recreate_db`
 - get into psql: `docker exec -ti $(docker ps -aqf "name=bikeshare-db") psql -U postgres`
+- run flask tests `docker-compose -f docker-compose.yml run web python manage.py test`
 
 Tips from friends / the internet:
 - AWS
