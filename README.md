@@ -35,6 +35,10 @@ Helpful database commands:
 - get into psql: `docker exec -ti $(docker ps -aqf "name=bikeshare-db") psql -U postgres`
 - run flask tests `docker-compose -f docker-compose.yml run web python manage.py test`
 
+Helpful flask:
+- Use TDD when adding flask routes https://testdriven.io/part-one-restful-routes
+- Postman is nice when working on APIs https://www.getpostman.com/
+
 Tips from friends / the internet:
 - AWS
     - look at elastic beanstalk or elastic containers
