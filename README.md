@@ -3,8 +3,8 @@
   - flask is the api
   - postgres holds all the station data in 2 tables: stations and station_changes
 - currently in the code:
-  - working through tutorial. status = completed https://testdriven.io/part-one-test-setup
-  - immediate next step: go to next section (flask blueprints)
+  - working through tutorial. status = completed docker-compose -f docker-compose-dev.yml up -d
+  - immediate next step: add restful routes
 
 
 ## Resources Used:

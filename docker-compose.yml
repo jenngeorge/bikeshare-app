@@ -14,7 +14,6 @@ services:
     ports:
       - 4000:4000
     environment:
-      - FLASK_APP=project/__init__.py
       - FLASK_DEBUG=1
       - APP_SETTINGS=project.config.DevelopmentConfig
       - DATABASE_URL=postgres://postgres:postgres@bikeshare-db:5432/bikeshare_dev
