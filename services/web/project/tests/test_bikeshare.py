@@ -2,7 +2,7 @@
 import json
 import unittest
 
-from api.tests.base import BaseTestCase
+from project.tests.base import BaseTestCase
 
 
 class TestBikeshareAPIService(BaseTestCase):
@@ -10,7 +10,7 @@ class TestBikeshareAPIService(BaseTestCase):
 
     def test_bikeshare(self):
         """Ensure the /ping route behaves correctly."""
-        response = self.client.get('/api/ping')
+        response = self.client.get('/bikeshare/ping')
         data = json.loads(response.data.decode())
         self.assertEqual(response.status_code, 200)
         self.assertIn('pong!', data['message'])

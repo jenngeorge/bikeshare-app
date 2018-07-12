@@ -115,7 +115,7 @@ def __init__(self, username, email):
 def index():
     return "hello!"
 
-@app.route('/api/ping', methods=['GET'])
+@app.route('/bikeshare/ping', methods=['GET'])
 def ping_pong():
     return jsonify({
         'status': 'success',
