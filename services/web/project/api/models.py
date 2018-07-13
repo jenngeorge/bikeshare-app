@@ -45,6 +45,14 @@ class Station(db.Model):
         self.test_station = test_station
         self.last_communication_time = last_communication_time
 
+    def from_dict(self, data):
+        for field in ['station_name', 'available_docks', 'total_docks', 'latitude',
+                    'longitude','status_value','status_key','available_bikes',
+                    'st_address_1','st_address_2','city','postal_code','location',
+                    'altitude','test_station','last_communication_time']:
+            if field in data:
+                setattr(self, field, data[field])
+
 # model
 # saves a history of each station's state
 class StationHistory(db.Model):

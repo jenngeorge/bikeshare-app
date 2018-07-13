@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify, request
 from project import db
-from project.api.models import Station
-from project.api.models import StationHistory
+from project.api.models import Station, StationHistory
 from sqlalchemy import exc
 
 # create a new blueprint and bind ping_pong method to it
@@ -70,3 +69,34 @@ def add_station():
     except exc.IntegrityError as e:
         db.session.rollback()
         return jsonify(response_object), 400
+
+    
+    try:
+        user = User.query.filter_by(id=int(user_id)).first()
+        if not user:
+            return jsonify(response_object), 404
+        else:
+            
+            return jsonify(response_object), 200
+    except ValueError:
+        return jsonify(response_object), 404
+
+@bikeshare_blueprint.route('/stations/<station_id>', methods=['PUT'])
+def update_station(station_id):
+    response_object = {
+        'status': 'fail',
+        'message': 'Station id does not exist'
+    }
+    try:
+        station = Station.query.filter_by(id=int(station_id)).first()
+        data = request.get_json() or {}
+        if not station:
+            return jsonify(response_object), 404
+        else:
+            station.from_dict(data)
+            db.session.commit()
+            response_object['status'] = 'success'
+            response_object['message'] = f'station {station_id} was updated!'
+            return jsonify(response_object), 200
+    except ValueError:
+        return jsonify(response_object), 404
