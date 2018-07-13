@@ -70,17 +70,6 @@ def add_station():
         db.session.rollback()
         return jsonify(response_object), 400
 
-    
-    try:
-        user = User.query.filter_by(id=int(user_id)).first()
-        if not user:
-            return jsonify(response_object), 404
-        else:
-            
-            return jsonify(response_object), 200
-    except ValueError:
-        return jsonify(response_object), 404
-
 @bikeshare_blueprint.route('/stations/<station_id>', methods=['PUT'])
 def update_station(station_id):
     response_object = {
