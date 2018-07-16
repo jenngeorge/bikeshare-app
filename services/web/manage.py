@@ -21,5 +21,17 @@ def test():
         return 0
     return 1
 
+@cli.command()
+def seed_db():
+    """Seeds the database."""
+    db.session.add(Station(id='24', station_name='Best Station', available_docks=10,
+                                   total_docks=35, latitude=40.741895, longitude=-73.989308,
+                                   status_value='In Service', status_key=1,
+                                   available_bikes=24, st_address_1='995 Pacific St',
+                                   st_address_2='', city='', postal_code='11215',
+                                   location='', altitude='', test_station=False,
+                                   last_communication_time='2018-07-12 06:51:58 PM'))
+    db.session.commit()
+
 if __name__ == '__main__':
     cli()

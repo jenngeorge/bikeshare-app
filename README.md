@@ -18,14 +18,18 @@
 
 Helpful Docker commands:
   - `docker-compose up`, `docker-compose down`
+    - e.g. docker-compose up -d --build 
   - `docker-compose ps`: prints status of services
   - `docker-compose logs`
+  - 'docker inspect web | grep "IPAddress"': gets container ip address
   - `docker system prune -a` use this or run out of storage
   - `docker-compose run <service-name> bash`
     - bash depends on the container (bash has to exist). some just have bin/sh
     - from within the container, can run commands
+    - e.g. docker-compose run web python manage.py seed_db
   - `docker-compose exec <service-name> bash`
     - get into an already running service
+    - e.g. docker exec -it bikeshare-db psql -U postgres
   - if there isn't permission to run something, add `chmod`
     - `chmod +x services/users/entrypoint.sh`
 
