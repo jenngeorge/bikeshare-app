@@ -2,7 +2,7 @@ from project import db
 
 # model: station information
 class Station(db.Model):
-    __tablename__ = "station"
+    __tablename__ = "stations"
     # id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     # here id will be the station_id, so no auto-incrememnt
     id = db.Column(db.Integer(), primary_key=True, nullable=False)
@@ -56,9 +56,9 @@ class Station(db.Model):
 # model
 # saves a history of each station's state
 class StationHistory(db.Model):
-    __tablename__ = "station_history"
+    __tablename__ = "station_histories"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    station_id = db.Column(db.Integer(), db.ForeignKey("station.id"), nullable=False)
+    station_id = db.Column(db.Integer(), db.ForeignKey("stations.id"), nullable=False)
     station_name = db.Column(db.String(128), nullable=True)
     available_docks = db.Column(db.Integer(), nullable=True)
     total_docks = db.Column(db.Integer(), nullable=True)

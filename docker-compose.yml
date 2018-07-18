@@ -26,7 +26,7 @@ services:
     image: jenngeorge/bikeshare_app:bikeshare-db
     hostname: bikeshare-db
     build:
-      context: ./services/web/project/bikeshare-db
+      context: ./services/bikeshare-db
       dockerfile: Dockerfile
     ports:
       - 5435:5432

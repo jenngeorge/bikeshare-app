@@ -89,26 +89,3 @@ def update_station(station_id):
             return jsonify(response_object), 200
     except ValueError:
         return jsonify(response_object), 404
-
-@bikeshare_blueprint.route('/stations/<station_id>', methods=['GET'])
-def get_single_station(station_id):
-    """Get single station details"""
-    response_object = {
-        'status': 'fail',
-        'message': 'Station does not exist'
-    }
-    try:
-        station = Station.query.filter_by(id=int(station_id)).first()
-        if not station:
-            return jsonify(response_object), 404
-        else:
-            response_object = {
-                'status': 'success',
-                'data': {
-                    'id': station.id,
-                    'username': station.station_name
-                }
-            }
-            return jsonify(response_object), 200
-    except ValueError:
-        return jsonify(response_object), 404
