@@ -74,18 +74,66 @@ def add_station():
 def update_station(station_id):
     response_object = {
         'status': 'fail',
-        'message': 'Station id does not exist'
+        'message': 'Invalid payload.'
     }
+    put_data = request.get_json()
+    if not put_data:
+        return jsonify(response_object), 400
+
+    if not station_id:
+        response_object['message'] = 'Invalid payload: Must include a station id'
+        return jsonify(response_object), 400
+
     try:
         station = Station.query.filter_by(id=int(station_id)).first()
         data = request.get_json() or {}
         if not station:
+            response_object['message'] = 'Station id does not exist'
             return jsonify(response_object), 404
         else:
             station.from_dict(data)
             db.session.commit()
             response_object['status'] = 'success'
             response_object['message'] = f'station {station_id} was updated!'
+            return jsonify(response_object), 200
+    except ValueError:
+        response_object['message'] = 'Value error'
+        return jsonify(response_object), 404
+
+@bikeshare_blueprint.route('/stations/<station_id>', methods=['GET'])
+def get_single_station(station_id):
+    """Get single station details"""
+    response_object = {
+        'status': 'fail',
+        'message': 'Station does not exist'
+    }
+    try:
+        station = Station.query.filter_by(id=int(station_id)).first()
+        if not station:
+            return jsonify(response_object), 404
+        else:
+            response_object = {
+                'status': 'success',
+                'data': {
+                    'id': station.id,
+                    'station_name': station.station_name,
+                    'available_docks': station.available_docks,
+                    'total_docks': station.total_docks,
+                    'latitude': station.latitude,
+                    'longitude': station.longitude,
+                    'status_value': station.status_value,
+                    'status_key': station.status_key,
+                    'available_bikes': station.available_bikes,
+                    'st_address_1': station.st_address_1,
+                    'st_address_2': station.st_address_2,
+                    'city': station.city,
+                    'postal_code': station.postal_code,
+                    'location': station.location,
+                    'altitude': station.altitude,
+                    'test_station': station.test_station,
+                    'last_communication_time': station.last_communication_time
+                }
+            }
             return jsonify(response_object), 200
     except ValueError:
         return jsonify(response_object), 404

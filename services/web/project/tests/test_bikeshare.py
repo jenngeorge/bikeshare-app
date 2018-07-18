@@ -29,7 +29,7 @@ class TestBikeshareAPIService(BaseTestCase):
                     'latitude': 40.741895,
                     'longitude': -73.989308,
                     'status_value': 'In Service',
-                    'status_value': 1,
+                    'status_key': 1,
                     'available_bikes': 24,
                     'st_address_1': '995 Pacific St',
                     'st_address_2': None,
@@ -74,7 +74,7 @@ class TestBikeshareAPIService(BaseTestCase):
                     'latitude': 40.741895,
                     'longitude': -73.989308,
                     'status_value': 'In Service',
-                    'status_value': 1,
+                    'status_key': 1,
                     'available_bikes': 24,
                     'st_address_1': '995 Pacific St',
                     'st_address_2': None,
@@ -105,7 +105,7 @@ class TestBikeshareAPIService(BaseTestCase):
                     'latitude': 40.741895,
                     'longitude': -73.989308,
                     'status_value': 'In Service',
-                    'status_value': 1,
+                    'status_key': 1,
                     'available_bikes': 24,
                     'st_address_1': '995 Pacific St',
                     'st_address_2': None,
@@ -134,7 +134,7 @@ class TestBikeshareAPIService(BaseTestCase):
         """Ensure a station can be updated in the database."""
         with self.client:
             self.client.post(
-                '/stations/26',
+                '/stations',
                 data=json.dumps({
                     'id': 26,
                     'station_name': 'Best Station',
@@ -143,7 +143,7 @@ class TestBikeshareAPIService(BaseTestCase):
                     'latitude': 40.741895,
                     'longitude': -73.989308,
                     'status_value': 'In Service',
-                    'status_value': 1,
+                    'status_key': 1,
                     'available_bikes': 24,
                     'st_address_1': '995 Pacific St',
                     'st_address_2': None,
@@ -174,41 +174,9 @@ class TestBikeshareAPIService(BaseTestCase):
             content_type='application/json',
         )
         data = json.loads(response.data.decode())
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 400)
         self.assertIn('Invalid payload.', data['message'])
         self.assertIn('fail', data['status'])
-
-    def test_update_station_missing_id(self):
-        """
-        Ensure error is thrown if the JSON object has a missing station id when updating.
-        """
-        with self.client:
-            response = self.client.put(
-                '/stations',
-                data=json.dumps({
-                    'station_name': 'Best Station',
-                    'available_docks': 10,
-                    'total_docks': 35,
-                    'latitude': 40.741895,
-                    'longitude': -73.989308,
-                    'status_value': 'In Service',
-                    'status_value': 1,
-                    'available_bikes': 24,
-                    'st_address_1': '995 Pacific St',
-                    'st_address_2': None,
-                    'city': None,
-                    'postal_code': '11215',
-                    'location': None,
-                    'altitude': None,
-                    'test_station': False,
-                    'last_communication_time': '2018-07-12 06:51:58 PM'
-                }),
-                content_type='application/json',
-            )
-            data = json.loads(response.data.decode())
-            self.assertEqual(response.status_code, 400)
-            self.assertIn('Invalid payload: Must include a station id', data['message'])
-            self.assertIn('fail', data['status'])
 
     def test_update_station_invalid_id(self):
         """
@@ -224,7 +192,7 @@ class TestBikeshareAPIService(BaseTestCase):
                     'latitude': 40.741895,
                     'longitude': -73.989308,
                     'status_value': 'In Service',
-                    'status_value': 1,
+                    'status_key': 1,
                     'available_bikes': 24,
                     'st_address_1': '995 Pacific St',
                     'st_address_2': None,
@@ -242,7 +210,56 @@ class TestBikeshareAPIService(BaseTestCase):
             self.assertIn('Station id does not exist', data['message'])
             self.assertIn('fail', data['status'])
 
+# get a station
+    def test_single_station(self):
+        """Ensure get single station behaves correctly"""
+        with self.client:
+            self.client.post(
+                '/stations',
+                data=json.dumps({
+                    'id': 26,
+                    'station_name': 'Best Station',
+                    'available_docks': 10,
+                    'total_docks': 35,
+                    'latitude': 40.741895,
+                    'longitude': -73.989308,
+                    'status_value': 'In Service',
+                    'status_key': 1,
+                    'available_bikes': 24,
+                    'st_address_1': '995 Pacific St',
+                    'st_address_2': None,
+                    'city': None,
+                    'postal_code': '11215',
+                    'location': None,
+                    'altitude': None,
+                    'test_station': False,
+                    'last_communication_time': '2018-07-12 06:51:58 PM'
+                }),
+                content_type='application/json',
+            )
+            response = self.client.get('/stations/26')
+            data = json.loads(response.data.decode())
+            self.assertEqual(response.status_code, 200)
+            self.assertIn('Best Station', data['data']['station_name'])
+            self.assertIn('success', data['status'])
 
+    def test_single_station_no_id(self):
+        """Ensure error is thrown if an id is not provided"""
+        with self.client:
+            response = self.client.get('stations/recurse')
+            data = json.loads(response.data.decode())
+            self.assertEqual(response.status_code, 404)
+            self.assertIn('Station does not exist', data['message'])
+            self.assertIn('fail', data['status'])
+
+    def test_single_station_incorrect_id(self):
+        """Ensure error is thrown if the id does not exist"""
+        with self.client:
+            response = self.client.get('stations/1001')
+            data = json.loads(response.data.decode())
+            self.assertEqual(response.status_code, 404)
+            self.assertIn('Station does not exist', data['message'])
+            self.assertIn('fail', data['status'])
 
 if __name__ == '__main__':
     unittest.main()
