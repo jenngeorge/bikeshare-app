@@ -19,6 +19,7 @@ def ping_pong():
 
 @bikeshare_blueprint.route('/stations', methods=['POST'])
 def add_station():
+    """Add a station"""
     post_data = request.get_json()
     response_object = {
         'status': 'fail',
@@ -72,6 +73,7 @@ def add_station():
 
 @bikeshare_blueprint.route('/stations/<station_id>', methods=['PUT'])
 def update_station(station_id):
+    """Update single station details"""
     response_object = {
         'status': 'fail',
         'message': 'Invalid payload.'
@@ -136,4 +138,29 @@ def get_single_station(station_id):
             }
             return jsonify(response_object), 200
     except ValueError:
+        return jsonify(response_object), 404
+
+@bikeshare_blueprint.route('/stations/<station_id>', methods=['DELETE'])
+def delete_station(station_id):
+    """Delete single station"""
+    response_object = {
+        'status': 'fail',
+        'message': 'Station does not exist'
+    }
+    if not station_id:
+        response_object['message'] = 'Invalid request: Must include a station id'
+        return jsonify(response_object), 400
+    try:
+        station = Station.query.filter_by(id=int(station_id)).first()
+        if station:
+            db.session.delete(station)
+            db.session.commit()
+            response_object['status'] = 'success'
+            response_object['message'] = f'station {station_id} was deleted!'
+            return jsonify(response_object), 200
+        else:
+            return jsonify(response_object), 404
+    except exc.IntegrityError as e:
+        db.session.rollback()
+        response_object['message'] = f'Error: {e}'
         return jsonify(response_object), 404

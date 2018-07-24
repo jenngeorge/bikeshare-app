@@ -210,7 +210,7 @@ class TestBikeshareAPIService(BaseTestCase):
             self.assertIn('Station id does not exist', data['message'])
             self.assertIn('fail', data['status'])
 
-# get a station
+    # get a station
     def test_single_station(self):
         """Ensure get single station behaves correctly"""
         with self.client:
@@ -260,6 +260,41 @@ class TestBikeshareAPIService(BaseTestCase):
             self.assertEqual(response.status_code, 404)
             self.assertIn('Station does not exist', data['message'])
             self.assertIn('fail', data['status'])
+
+    # Delete station tests
+    def test_delete_station(self):
+        """Ensure a station can be updated in the database."""
+        with self.client:
+            self.client.post(
+                '/stations',
+                data=json.dumps({
+                    'id': 26,
+                    'station_name': 'Best Station',
+                    'available_docks': 10,
+                    'total_docks': 35,
+                    'latitude': 40.741895,
+                    'longitude': -73.989308,
+                    'status_value': 'In Service',
+                    'status_key': 1,
+                    'available_bikes': 24,
+                    'st_address_1': '995 Pacific St',
+                    'st_address_2': None,
+                    'city': None,
+                    'postal_code': '11215',
+                    'location': None,
+                    'altitude': None,
+                    'test_station': False,
+                    'last_communication_time': '2018-07-12 06:51:58 PM'
+                }),
+                content_type='application/json',
+            )
+            response = self.client.delete(
+                '/stations/26'
+            )
+            data = json.loads(response.data.decode())
+            self.assertEqual(response.status_code, 200)
+            self.assertIn('station 26 was deleted!', data['message'])
+            self.assertIn('success', data['status'])
 
 if __name__ == '__main__':
     unittest.main()
