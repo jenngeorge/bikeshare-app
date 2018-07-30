@@ -263,7 +263,7 @@ class TestBikeshareAPIService(BaseTestCase):
 
     # Delete station tests
     def test_delete_station(self):
-        """Ensure a station can be updated in the database."""
+        """Ensure a station can be deleted in the database."""
         with self.client:
             self.client.post(
                 '/stations',
@@ -295,6 +295,25 @@ class TestBikeshareAPIService(BaseTestCase):
             self.assertEqual(response.status_code, 200)
             self.assertIn('station 26 was deleted!', data['message'])
             self.assertIn('success', data['status'])
+
+    def test_delete_station_no_id(self):
+        """Ensure error is thrown if an id is not provided"""
+        with self.client:
+            response = self.client.get('stations/recurse')
+            data = json.loads(response.data.decode())
+            self.assertEqual(response.status_code, 404)
+            self.assertIn('Station does not exist', data['message'])
+            self.assertIn('fail', data['status'])
+
+    def test_delte_station_incorrect_id(self):
+        """Ensure error is thrown if the id does not exist"""
+        with self.client:
+            response = self.client.get('stations/1001')
+            data = json.loads(response.data.decode())
+            self.assertEqual(response.status_code, 404)
+            self.assertIn('Station does not exist', data['message'])
+            self.assertIn('fail', data['status'])
+
 
 if __name__ == '__main__':
     unittest.main()
