@@ -26,6 +26,24 @@ key_schema_str = """
 value_schema = avro.loads(value_schema_str)
 key_schema = avro.loads(key_schema_str)
 
+def format_data(data):
+    # filter out all the None's
+    
+
+def make_request(station_id, data):
+    print('in request switch', data)
+
+    # op create
+    if data['op'] == 'create':
+        print('post')
+            # try:
+            #     req = requests.request('POST', 'http://web:4000/stations', body)
+    elif data['op'] == 'update':
+        print('update')
+    elif data['op'] == 'delete':
+        print('delete')
+
+
 def consume():
     c = AvroConsumer({
     'bootstrap.servers': 'kafka-1:19092, kafka-2:29092',
@@ -54,8 +72,9 @@ def consume():
                 print("~~A MESSAGE ERROR", msg.error())
                 break
 
+        # do something with the data
         print('~~~~~DIDD ITTTT', "key:", msg.key(), "value:", msg.value())
-
+        # make_request(msg.key, msg.value)
     c.close()
 
 if __name__ == '__main__':

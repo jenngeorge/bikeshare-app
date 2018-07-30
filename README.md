@@ -18,7 +18,7 @@
 
 Helpful Docker commands:
   - `docker-compose up`, `docker-compose down`
-    - e.g. docker-compose up -d --build 
+    - e.g. docker-compose up -d --build
   - `docker-compose ps`: prints status of services
   - `docker-compose logs`
   - 'docker inspect web | grep "IPAddress"': gets container ip address
@@ -32,6 +32,7 @@ Helpful Docker commands:
     - e.g. docker exec -it bikeshare-db psql -U postgres
   - if there isn't permission to run something, add `chmod`
     - `chmod +x services/users/entrypoint.sh`
+  - list containers: `docker container ls`
 
 Helpful database commands:
 - recreate the dev database: `docker-compose -f docker-compose.yml \

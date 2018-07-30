@@ -35,7 +35,7 @@ def poll():
 
     conf = SparkConf().setAppName('CitibikeDataIngestion')
     sc = SparkContext(conf=conf)
-    print('DIDDDD SPARK')
+    # print('DIDDDD SPARK')
     last_rdd = None
 
     while True:

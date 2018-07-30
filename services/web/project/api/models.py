@@ -76,11 +76,10 @@ class StationHistory(db.Model):
     test_station = db.Column(db.Boolean(), nullable=True)
     last_communication_time = db.Column(db.String(128), nullable=True)
 
-    def __init__(self, id, station_id, station_name, available_docks, total_docks, latitude,
+    def __init__(self, station_id, station_name, available_docks, total_docks, latitude,
                  longitude, status_value, status_key, available_bikes, st_address_1,
                  st_address_2, city, postal_code, location, altitude, test_station,
                  last_communication_time):
-        self.id = id
         self.station_id = station_id
         self.station_name = station_name
         self.available_docks = available_docks
