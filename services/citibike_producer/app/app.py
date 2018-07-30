@@ -6,8 +6,6 @@ from pyspark import SparkContext, SparkConf
 from confluent_kafka import avro
 from confluent_kafka.avro import AvroProducer
 from avro_schema import station_schema
-#except:
-#    print('error importing for spark_ingest/app')
 
 
 value_schema_str = station_schema
@@ -73,7 +71,7 @@ def poll():
                             .union(rdd_deletes)
 
         for update in rdd_stream.collect():
-            print(update)
+            # print(update)
             key_dict = dict([update[0]])
             value_dict = dict(update[1])
             avroProducer.produce(topic='station_status', value=value_dict, key=key_dict)

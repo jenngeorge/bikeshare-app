@@ -1,17 +1,17 @@
 FROM jenngeorge/bikeshare_app:spark
 
 # Set the working directory
-RUN mkdir -p /usr/src/spark_ingest
-WORKDIR /usr/src/spark_ingest
+RUN mkdir -p /usr/src/citibike_producer
+WORKDIR /usr/src/citibike_producer
 
 # add requirements
-COPY ./app/requirements.txt /usr/src/spark_ingest/requirements.txt
+COPY ./app/requirements.txt /usr/src/citibike_producer/requirements.txt
 
 # Install any needed packages specified in requirements.txt
 RUN pip install -r requirements.txt
 
 # add app
-COPY ./app /usr/src/spark_ingest
+COPY ./app /usr/src/citibike_producer
 
 # add dockerize
 RUN apt-get update && apt-get install -y wget
