@@ -27,7 +27,9 @@ value_schema = avro.loads(value_schema_str)
 key_schema = avro.loads(key_schema_str)
 
 def format_data(data):
-    # filter out all the None's
+    formatted_dict = {k:v for (k,v) in data.items() if v != None}
+    print('formatted dict', formatted_dict)
+    return formatted_dict
     
 
 def make_request(station_id, data):
@@ -36,12 +38,28 @@ def make_request(station_id, data):
     # op create
     if data['op'] == 'create':
         print('post')
-            # try:
-            #     req = requests.request('POST', 'http://web:4000/stations', body)
+        try:
+            req = requests.request('POST', 'http://web:4000/stations', data = data)
+            req.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            print("Message POST request error: {}".format(e))
+
     elif data['op'] == 'update':
         print('update')
+        data = format_data(data)
+        try:
+            req = requests.request('PUT', 'http://web:4000/stations', data = data)
+            req.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            print("Message PUT request error: {}".format(e))
+
     elif data['op'] == 'delete':
         print('delete')
+        try:
+            req = requests.request('DELETE', 'http://web:4000/stations/{}'.format(station_id))
+            req.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            print("Message DELETE request error: {}".format(e))
 
 
 def consume():
@@ -74,7 +92,7 @@ def consume():
 
         # do something with the data
         print('~~~~~DIDD ITTTT', "key:", msg.key(), "value:", msg.value())
-        # make_request(msg.key, msg.value)
+        make_request(msg.key[station_id], msg.value)
     c.close()
 
 if __name__ == '__main__':
