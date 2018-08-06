@@ -2,9 +2,10 @@
 - goal: adding Flask & Postgres to Docker, set up database
   - flask is the api
   - postgres holds all the station data in 2 tables: stations and station_changes
-- currently in the code:
-  - working through tutorial. status = completed docker-compose -f docker-compose-dev.yml up -d
-  - immediate next step: add restful routes
+- currently:
+  - making requests to flask api from consumer 
+  - add station history update requests to station add & update
+  - create a testintegration service 
 
 
 ## Resources Used:

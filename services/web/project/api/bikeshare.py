@@ -63,6 +63,7 @@ def add_station():
             db.session.commit()
             response_object['status'] = 'success'
             response_object['message'] = f'station {id} was added!'
+            # also add to station station_histories
             return jsonify(response_object), 201
         else:
             response_object['message'] = 'Sorry. That station id already exists.'
@@ -79,6 +80,7 @@ def update_station(station_id):
         'message': 'Invalid payload.'
     }
     put_data = request.get_json()
+    print('IN bikeshare update~~~~~data', 'station id:', station_id, 'data', put_data)
     if not put_data:
         return jsonify(response_object), 400
 
