@@ -58,7 +58,7 @@ def make_request(station_id, data):
         print('update~~~~')
         try:
             data = format_data(data)
-            req = requests.request('PUT', 'http://web:4000/stations/{station_id}', data = data)
+            req = requests.request('PUT', 'http://web:4000/stations/{}'.format(station_id), data = data)
             req.raise_for_status()
         except requests.exceptions.RequestException as e:
             print("Message PUT request error: {}".format(e))
@@ -66,7 +66,7 @@ def make_request(station_id, data):
     elif data['op'] == 'delete':
         print('delete')
         try:
-            req = requests.request('DELETE', 'http://web:4000/stations/{station_id}')
+            req = requests.request('DELETE', 'http://web:4000/stations/{}'.format(station_id))
             req.raise_for_status()
         except requests.exceptions.RequestException as e:
             print("Message DELETE request error: {}".format(e))
