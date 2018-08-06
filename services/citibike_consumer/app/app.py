@@ -2,6 +2,7 @@
 import requests
 import json
 import time
+import re # regex
 #from pyspark import SparkContext, SparkConf
 from confluent_kafka import avro, KafkaError
 from confluent_kafka.avro import AvroConsumer
@@ -26,19 +27,51 @@ key_schema_str = """
 value_schema = avro.loads(value_schema_str)
 key_schema = avro.loads(key_schema_str)
 
-def format_data(data):
+def convert_camel_to_snake(name):
+    s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
+    return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
+
+def format_update_data(station_id, data):
     # filter out all the None's
-    
+    # format data for a post request
+    formatted_data = {}
+    formatted_data['station_id'] = station_id['id']
+    # print('DATA', data)
+
+    for key, value in data.items():
+        if value != 'null':
+            formatted_data[convert_camel_to_snake(key)] = value
+
+    print('UPDATE DATA', json.dumps(formatted_data))
+    return formatted_data
+
+def format_post_data(station_id, data):
+    # format data for a post request
+    formatted_data = {}
+    formatted_data['id'] = station_id['id']
+
+    for key, value in data.items():
+        formatted_data[convert_camel_to_snake(key)] = value
+
+    print('POST DATA', json.dumps(formatted_data))
+    return formatted_data
+
 
 def make_request(station_id, data):
-    print('in request switch', data)
+    # data is a dict with camelCase keys
+    # need to change to snake_case
 
     # op create
     if data['op'] == 'create':
+        # send create request
+        # send station histories request
         print('post')
             # try:
             #     req = requests.request('POST', 'http://web:4000/stations', body)
     elif data['op'] == 'update':
+        format_update_data(station_id, data)
+        # send update request
+        # send station histories request
         print('update')
     elif data['op'] == 'delete':
         print('delete')
@@ -73,8 +106,8 @@ def consume():
                 break
 
         # do something with the data
-        print('~~~~~DIDD ITTTT', "key:", msg.key(), "value:", msg.value())
-        # make_request(msg.key, msg.value)
+        #print('~~~~~DIDD ITTTT', "key:", msg.key(), "value:", msg.value())
+        make_request(msg.key(), msg.value())
     c.close()
 
 if __name__ == '__main__':

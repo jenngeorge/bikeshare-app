@@ -20,12 +20,13 @@ class Station(db.Model):
     postal_code = db.Column(db.String(128), nullable=True)
     location = db.Column(db.String(128), nullable=True)
     altitude = db.Column(db.String(128), nullable=True)
+    land_mark = db.Column(db.String(128), nullable=True)
     test_station = db.Column(db.Boolean(), nullable=True)
     last_communication_time = db.Column(db.String(128), nullable=True)
 
     def __init__(self, id, station_name, available_docks, total_docks, latitude,
                  longitude, status_value, status_key, available_bikes, st_address_1,
-                 st_address_2, city, postal_code, location, altitude, test_station,
+                 st_address_2, city, postal_code, location, altitude, land_mark, test_station,
                  last_communication_time):
         self.id = id
         self.station_name = station_name
@@ -42,6 +43,7 @@ class Station(db.Model):
         self.postal_code = postal_code
         self.location = location
         self.altitude = altitude
+        self.land_mark = lamd_mark
         self.test_station = test_station
         self.last_communication_time = last_communication_time
 
@@ -49,7 +51,7 @@ class Station(db.Model):
         for field in ['station_name', 'available_docks', 'total_docks', 'latitude',
                     'longitude','status_value','status_key','available_bikes',
                     'st_address_1','st_address_2','city','postal_code','location',
-                    'altitude','test_station','last_communication_time']:
+                    'altitude', 'land_mark', 'test_station','last_communication_time']:
             if field in data:
                 setattr(self, field, data[field])
 
@@ -73,12 +75,13 @@ class StationHistory(db.Model):
     postal_code = db.Column(db.String(128), nullable=True)
     location = db.Column(db.String(128), nullable=True)
     altitude = db.Column(db.String(128), nullable=True)
+    land_mark = db.Column(db.String(128), nullable=True)
     test_station = db.Column(db.Boolean(), nullable=True)
     last_communication_time = db.Column(db.String(128), nullable=True)
 
     def __init__(self, station_id, station_name, available_docks, total_docks, latitude,
                  longitude, status_value, status_key, available_bikes, st_address_1,
-                 st_address_2, city, postal_code, location, altitude, test_station,
+                 st_address_2, city, postal_code, location, altitude, land_mark, test_station,
                  last_communication_time):
         self.station_id = station_id
         self.station_name = station_name
@@ -95,5 +98,6 @@ class StationHistory(db.Model):
         self.postal_code = postal_code
         self.location = location
         self.altitude = altitude
+        self.land_mark = land_mark
         self.test_station = test_station
         self.last_communication_time = last_communication_time
