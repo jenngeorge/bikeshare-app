@@ -304,6 +304,67 @@ class TestBikeshareAPIService(BaseTestCase):
             self.assertIn('station 26 was deleted!', data['message'])
             self.assertIn('success', data['status'])
 
+    def test_delete_station_and_histories(self):
+        """Ensure a station can be deleted in the database."""
+        with self.client:
+            self.client.post(
+                '/stations',
+                data=json.dumps({
+                    'id': 26,
+                    'station_name': 'Best Station',
+                    'available_docks': 10,
+                    'total_docks': 35,
+                    'latitude': 40.741895,
+                    'longitude': -73.989308,
+                    'status_value': 'In Service',
+                    'status_key': 1,
+                    'land_mark': None,
+                    'available_bikes': 24,
+                    'st_address_1': '995 Pacific St',
+                    'st_address_2': None,
+                    'city': None,
+                    'postal_code': '11215',
+                    'location': None,
+                    'altitude': None,
+                    'test_station': False,
+                    'last_communication_time': '2018-07-12 06:51:58 PM'
+                }),
+                content_type='application/json',
+            )
+            # add station history
+            self.client.post(
+                '/station_histories',
+                data=json.dumps({
+                    'station_id': 26,
+                    'station_name': 'Best Station',
+                    'available_docks': 10,
+                    'total_docks': 35,
+                    'latitude': 40.741895,
+                    'longitude': -73.989308,
+                    'status_value': 'In Service',
+                    'status_key': 1,
+                    'land_mark': None,
+                    'available_bikes': 24,
+                    'st_address_1': '995 Pacific St',
+                    'st_address_2': None,
+                    'city': None,
+                    'postal_code': '11215',
+                    'location': None,
+                    'altitude': None,
+                    'test_station': False,
+                    'last_communication_time': '2018-07-12 06:51:58 PM'
+                }),
+                content_type='application/json',
+            )
+            response = self.client.delete(
+                '/stations/26'
+            )
+            data = json.loads(response.data.decode())
+            print(data)
+            self.assertEqual(response.status_code, 200)
+            self.assertIn('station 26 was deleted!', data['message'])
+            self.assertIn('success', data['status'])
+
     def test_delete_station_no_id(self):
         """Ensure error is thrown if an id is not provided"""
         with self.client:

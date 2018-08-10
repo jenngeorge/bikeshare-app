@@ -60,7 +60,9 @@ class Station(db.Model):
 class StationHistory(db.Model):
     __tablename__ = "station_histories"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    station_id = db.Column(db.Integer(), db.ForeignKey("stations.id"), nullable=False)
+    station_id = db.Column(db.Integer(), db.ForeignKey("stations.id", ondelete="CASCADE"), nullable=False)
+    station = db.relationship('Station', backref=db.backref('station_histories', passive_deletes=True))
+
     station_name = db.Column(db.String(128), nullable=True)
     available_docks = db.Column(db.Integer(), nullable=True)
     total_docks = db.Column(db.Integer(), nullable=True)
