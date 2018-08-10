@@ -61,7 +61,6 @@ def add_station():
                                    st_address_2=st_address_2, city=city, postal_code=postal_code,
                                    location=location, altitude=altitude, test_station=test_station,
                                    last_communication_time=last_communication_time))
-            db.session.commit()
 
             # add station history
             db.session.add(StationHistory(station_id=id, station_name=station_name, available_docks=available_docks,
@@ -108,7 +107,7 @@ def update_station(station_id):
             return jsonify(response_object), 404
         else:
             station.from_dict(data)
-            db.session.commit()
+
             # update this to reflect the correct data from object
             db.session.add(StationHistory(station_id=station.id, station_name=station.station_name, available_docks=station.available_docks,
                                    total_docks=station.total_docks, latitude=station.latitude, longitude=station.longitude,
@@ -179,6 +178,7 @@ def delete_station(station_id):
         station = Station.query.filter_by(id=int(station_id)).first()
         if station:
             db.session.delete(station)
+            # delete corresponding entries in station history
             db.session.commit()
             response_object['status'] = 'success'
             response_object['message'] = f'station {station_id} was deleted!'
