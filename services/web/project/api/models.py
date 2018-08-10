@@ -43,7 +43,7 @@ class Station(db.Model):
         self.postal_code = postal_code
         self.location = location
         self.altitude = altitude
-        self.land_mark = lamd_mark
+        self.land_mark = land_mark
         self.test_station = test_station
         self.last_communication_time = last_communication_time
 

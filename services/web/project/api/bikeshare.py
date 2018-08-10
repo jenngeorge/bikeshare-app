@@ -37,6 +37,7 @@ def add_station():
     longitude = post_data.get('longitude')
     status_value = post_data.get('status_value')
     status_key = post_data.get('status_key')
+    land_mark = post_data.get('land_mark')
     available_bikes = post_data.get('available_bikes')
     st_address_1 = post_data.get('st_address_1')
     st_address_2 = post_data.get('st_address_2')
@@ -55,26 +56,26 @@ def add_station():
         if not station:
             db.session.add(Station(id=id, station_name=station_name, available_docks=available_docks,
                                    total_docks=total_docks, latitude=latitude, longitude=longitude,
-                                   status_value=status_value, status_key=status_key,
+                                   status_value=status_value, status_key=status_key, land_mark=land_mark,
                                    available_bikes=available_bikes, st_address_1=st_address_1,
                                    st_address_2=st_address_2, city=city, postal_code=postal_code,
                                    location=location, altitude=altitude, test_station=test_station,
                                    last_communication_time=last_communication_time))
             db.session.commit()
-            
-            # add station history 
+
+            # add station history
             db.session.add(StationHistory(station_id=id, station_name=station_name, available_docks=available_docks,
                                    total_docks=total_docks, latitude=latitude, longitude=longitude,
-                                   status_value=status_value, status_key=status_key,
+                                   status_value=status_value, status_key=status_key, land_mark=land_mark,
                                    available_bikes=available_bikes, st_address_1=st_address_1,
                                    st_address_2=st_address_2, city=city, postal_code=postal_code,
                                    location=location, altitude=altitude, test_station=test_station,
                                    last_communication_time=last_communication_time))
-                                   
+
             db.session.commit()
             response_object['status'] = 'success'
             response_object['message'] = f'station {id} was added!'
-            
+
             return jsonify(response_object), 201
         else:
             response_object['message'] = 'Sorry. That station id already exists.'
@@ -108,15 +109,15 @@ def update_station(station_id):
         else:
             station.from_dict(data)
             db.session.commit()
-            # update this to reflect the correct data from object 
-            db.session.add(StationHistory(station_id=station.id, station_name=station_name, available_docks=available_docks,
-                                   total_docks=total_docks, latitude=latitude, longitude=longitude,
-                                   status_value=status_value, status_key=status_key,
-                                   available_bikes=available_bikes, st_address_1=st_address_1,
-                                   st_address_2=st_address_2, city=city, postal_code=postal_code,
-                                   location=location, altitude=altitude, test_station=test_station,
-                                   last_communication_time=last_communication_time))
-                                   
+            # update this to reflect the correct data from object
+            db.session.add(StationHistory(station_id=station.id, station_name=station.station_name, available_docks=station.available_docks,
+                                   total_docks=station.total_docks, latitude=station.latitude, longitude=station.longitude,
+                                   status_value=station.status_value, status_key=station.status_key, land_mark=station.land_mark,
+                                   available_bikes=station.available_bikes, st_address_1=station.st_address_1,
+                                   st_address_2=station.st_address_2, city=station.city, postal_code=station.postal_code,
+                                   location=station.location, altitude=station.altitude, test_station=station.test_station,
+                                   last_communication_time=station.last_communication_time))
+
             db.session.commit()
             response_object['status'] = 'success'
             response_object['message'] = f'station {station_id} was updated!'
@@ -147,6 +148,7 @@ def get_single_station(station_id):
                     'latitude': station.latitude,
                     'longitude': station.longitude,
                     'status_value': station.status_value,
+                    'land_mark': station.land_mark,
                     'status_key': station.status_key,
                     'available_bikes': station.available_bikes,
                     'st_address_1': station.st_address_1,
@@ -209,6 +211,7 @@ def add_station_history():
     longitude = post_data.get('longitude')
     status_value = post_data.get('status_value')
     status_key = post_data.get('status_key')
+    land_mark = post_data.get('land_mark')
     available_bikes = post_data.get('available_bikes')
     st_address_1 = post_data.get('st_address_1')
     st_address_2 = post_data.get('st_address_2')
@@ -225,7 +228,7 @@ def add_station_history():
     try:
         db.session.add(StationHistory(station_id=station_id, station_name=station_name, available_docks=available_docks,
                                total_docks=total_docks, latitude=latitude, longitude=longitude,
-                               status_value=status_value, status_key=status_key,
+                               status_value=status_value, status_key=status_key, land_mark=land_mark,
                                available_bikes=available_bikes, st_address_1=st_address_1,
                                st_address_2=st_address_2, city=city, postal_code=postal_code,
                                location=location, altitude=altitude, test_station=test_station,

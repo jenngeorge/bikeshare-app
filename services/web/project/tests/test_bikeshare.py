@@ -30,6 +30,7 @@ class TestBikeshareAPIService(BaseTestCase):
                     'longitude': -73.989308,
                     'status_value': 'In Service',
                     'status_key': 1,
+                    'land_mark': None,
                     'available_bikes': 24,
                     'st_address_1': '995 Pacific St',
                     'st_address_2': None,
@@ -75,6 +76,7 @@ class TestBikeshareAPIService(BaseTestCase):
                     'longitude': -73.989308,
                     'status_value': 'In Service',
                     'status_key': 1,
+                    'land_mark': None,
                     'available_bikes': 24,
                     'st_address_1': '995 Pacific St',
                     'st_address_2': None,
@@ -106,6 +108,7 @@ class TestBikeshareAPIService(BaseTestCase):
                     'longitude': -73.989308,
                     'status_value': 'In Service',
                     'status_key': 1,
+                    'land_mark': None,
                     'available_bikes': 24,
                     'st_address_1': '995 Pacific St',
                     'st_address_2': None,
@@ -144,6 +147,7 @@ class TestBikeshareAPIService(BaseTestCase):
                     'longitude': -73.989308,
                     'status_value': 'In Service',
                     'status_key': 1,
+                    'land_mark': None,
                     'available_bikes': 24,
                     'st_address_1': '995 Pacific St',
                     'st_address_2': None,
@@ -193,6 +197,7 @@ class TestBikeshareAPIService(BaseTestCase):
                     'longitude': -73.989308,
                     'status_value': 'In Service',
                     'status_key': 1,
+                    'land_mark': None,
                     'available_bikes': 24,
                     'st_address_1': '995 Pacific St',
                     'st_address_2': None,
@@ -225,6 +230,7 @@ class TestBikeshareAPIService(BaseTestCase):
                     'longitude': -73.989308,
                     'status_value': 'In Service',
                     'status_key': 1,
+                    'land_mark': None,
                     'available_bikes': 24,
                     'st_address_1': '995 Pacific St',
                     'st_address_2': None,
@@ -276,6 +282,7 @@ class TestBikeshareAPIService(BaseTestCase):
                     'longitude': -73.989308,
                     'status_value': 'In Service',
                     'status_key': 1,
+                    'land_mark': None,
                     'available_bikes': 24,
                     'st_address_1': '995 Pacific St',
                     'st_address_2': None,
@@ -292,6 +299,7 @@ class TestBikeshareAPIService(BaseTestCase):
                 '/stations/26'
             )
             data = json.loads(response.data.decode())
+            print(data)
             self.assertEqual(response.status_code, 200)
             self.assertIn('station 26 was deleted!', data['message'])
             self.assertIn('success', data['status'])
@@ -305,7 +313,7 @@ class TestBikeshareAPIService(BaseTestCase):
             self.assertIn('Station does not exist', data['message'])
             self.assertIn('fail', data['status'])
 
-    def test_delte_station_incorrect_id(self):
+    def test_delete_station_incorrect_id(self):
         """Ensure error is thrown if the id does not exist"""
         with self.client:
             response = self.client.get('stations/1001')
@@ -330,6 +338,7 @@ class TestBikeshareAPIService(BaseTestCase):
                     'longitude': -73.989308,
                     'status_value': 'In Service',
                     'status_key': 1,
+                    'land_mark': None,
                     'available_bikes': 24,
                     'st_address_1': '995 Pacific St',
                     'st_address_2': None,
@@ -342,7 +351,7 @@ class TestBikeshareAPIService(BaseTestCase):
                 }),
                 content_type='application/json',
             )
-            # test adding history for that station 
+            # test adding history for that station
             response = self.client.post(
                 '/station_histories',
                 data=json.dumps({
@@ -354,6 +363,7 @@ class TestBikeshareAPIService(BaseTestCase):
                     'longitude': -73.989308,
                     'status_value': 'In Service',
                     'status_key': 1,
+                    'land_mark': None,
                     'available_bikes': 24,
                     'st_address_1': '995 Pacific St',
                     'st_address_2': None,
@@ -400,6 +410,7 @@ class TestBikeshareAPIService(BaseTestCase):
                     'longitude': -73.989308,
                     'status_value': 'In Service',
                     'status_key': 1,
+                    'land_mark': None,
                     'available_bikes': 24,
                     'st_address_1': '995 Pacific St',
                     'st_address_2': None,
